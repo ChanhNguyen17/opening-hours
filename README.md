@@ -51,11 +51,12 @@ This API utilizes Redis cache to improve performance by storing previously proce
 
 To get this project up and running, follow these steps:
 
-1. Clone the repository to your local machine:
+1. Unzip the repository
+2. Change your working directory to the project folder.
 
-    ```shell
-    git clone https://github.com/yourusername/restaurant-opening-hours-api.git
-    ```
+  ```shell
+  cd opening-hours
+  ```
 
 2. Build and start the Docker containers using Docker Compose: This will create and start the FastAPI server and a Redis container.
 
