@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api.routers import opening_hours_router
+from src.routers import opening_hours_router
 
 
 def add_routers(app: FastAPI) -> None:

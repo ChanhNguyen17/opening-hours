@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from typing import Dict
 
-from api.models import OpeningHoursInput
-from api.views import views_opening_hours
+from src.models import OpeningHoursInput
+from src.views import views_opening_hours
 
 opening_hours_router = APIRouter()
 

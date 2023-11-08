@@ -1,6 +1,6 @@
-from api.views import format_hours
-from api.views import views_opening_hours
-from api.models import OpeningHoursInput, OpeningHour
+from src.views import format_hours
+from src.views import views_opening_hours
+from src.models import OpeningHoursInput, OpeningHour
 
 
 def test_format_hours():

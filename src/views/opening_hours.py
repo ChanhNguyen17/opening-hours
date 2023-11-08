@@ -1,7 +1,9 @@
 from typing import List
-from api.models import OpeningHoursInput
-from api.models import OpeningHour
-from api.utils import convert_unix_to_string
+from src.models import OpeningHoursInput
+from src.models import OpeningHour
+from src.utils import convert_unix_to_string
+from src.cache.redis import get_opening_hours_from_cache
+from src.cache.redis import cache_opening_hours
 
 
 def views_opening_hours(opening_hours: OpeningHoursInput):
@@ -14,23 +16,36 @@ def views_opening_hours(opening_hours: OpeningHoursInput):
         "Saturday": format_hours(opening_hours.saturday + opening_hours.sunday[:1]),
         "Sunday": format_hours(opening_hours.sunday + opening_hours.monday[:1]),
     }
+
     return response
 
 
 def format_hours(opening_hours: List[OpeningHour]) -> str:
+    # Check if the result is already in the Redis cache
+    cached_result = get_opening_hours_from_cache(opening_hours)
+
+    if cached_result:
+        return cached_result
+
     formatted_hours = []
     current_open = None
 
     for entry in opening_hours:
         if entry.type == "open":
-            current_open = entry
+            current_open = entry.to_dict()
         else:
             if current_open:
                 formatted_hours.append(
-                    f"{convert_unix_to_string(current_open.value)} - {convert_unix_to_string(entry.value)}"
+                    f"{convert_unix_to_string(current_open['value'])} - {convert_unix_to_string(entry.to_dict()['value'])}"
                 )
                 current_open = None
 
     if len(formatted_hours) == 0:
         return "Closed"
-    return ", ".join(formatted_hours)
+
+    result = ", ".join(formatted_hours)
+
+    # Cache the result
+    cache_opening_hours(opening_hours, result)
+
+    return result

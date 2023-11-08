@@ -1,4 +1,4 @@
-from api.utils import convert_unix_to_string
+from src.utils import convert_unix_to_string
 
 
 def test_convert_unix_to_string_valid():

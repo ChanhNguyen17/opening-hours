@@ -17,3 +17,10 @@ def convert_unix_to_string(unix_time):
         return formatted_time
     else:
         return "Invalid UNIX time"
+
+
+def safe_parse_int(value, default=None):
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return default

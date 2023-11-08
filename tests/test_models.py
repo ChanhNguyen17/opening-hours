@@ -1,5 +1,6 @@
 import pytest
-from api.models import OpeningHour, OpeningHoursInput
+from src.models import OpeningHour
+from src.models import OpeningHoursInput
 from pydantic import ValidationError
 
 
@@ -32,7 +33,7 @@ def test_opening_hours_input_model():
 
     # Invalid opening hours input (missing 'monday' key)
     with pytest.raises(ValidationError):
-        opening_hours_input = OpeningHoursInput(
+        OpeningHoursInput(
             tuesday=[],
             wednesday=[],
             thursday=[],
@@ -43,7 +44,7 @@ def test_opening_hours_input_model():
 
     # Invalid opening hours input (invalid opening hour)
     with pytest.raises(ValidationError):
-        opening_hours_input = OpeningHoursInput(
+        OpeningHoursInput(
             monday=[],
             tuesday=[],
             wednesday=[{"type": "open", "value": "invalid_time"}, {"type": "close", "value": 7200}],
