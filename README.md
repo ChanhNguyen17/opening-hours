@@ -7,6 +7,7 @@
 - [Testing](#testing)
   - [Using pytest](#using-pytest)
   - [Manual Testing with Curl](#manual-testing-with-curl)
+- [Part 2](#part-2)
 
 ## Prerequisites
 
@@ -79,7 +80,6 @@ This will execute all the tests and display the results.
 You can test the API manually with curl. Here's an example of testing the API with a sample request:
 
 ```shell
-# Send a POST request to the restaurant opening hours endpoint
 curl -X POST -H "Content-Type: application/json" -d '{
 "monday" : [{"type": "close", "value": 1000}, {"type":  "open", "value":  28800}, {"type": "close", "value": 36001}, {"type": "open", "value": 39600}, {"type": "close", "value": 45678}],
 "tuesday" : [ { "type" : "open", "value" : 14400 }, { "type" : "close", "value" : 21600 } ],
@@ -141,3 +141,44 @@ To stop the Docker containers using:
 ```shell
 docker-compose down
 ```
+
+## Part 2
+Tell us what you think about the data format. Is the current JSON structure the best way to represent  that kind of data or can you come up with a better version?
+
+The current JSON structure is quite straightforward and easy to understand. It uses keys for each day of the week and an array of objects to represent the opening and closing times. However, there are a few areas where it could potentially be improved:
+
+1. **Handling of opening and closing times**: The current structure uses separate objects for opening and closing times. This could potentially lead to errors if the data is not perfectly aligned. For instance, if an 'open' object is not followed by a 'close' object, it could lead to confusion. A possible improvement could be to pair opening and closing times together in the same object, like so:
+
+  ```json
+  "monday": [
+    {
+      "open": 36000,
+      "close": 64800
+    },
+    {
+      "open": 37800,
+      "close": 64800
+    }
+  ]
+  ```
+
+2. **Handling of overnight hours**: The current structure does not handle overnight hours very intuitively. If a restaurant closes after midnight, the closing time is represented on the next day. This could be confusing and could make the data harder to process. A possible solution could be to allow the 'close' value to exceed the maximum UNIX timestamp for a day (86400), indicating that the closing time is on the next day.
+
+3. **Use of UNIX timestamps**: While UNIX timestamps are a universal way to represent time, they might not be the most intuitive format for this use case. A more human-readable format like "HH:MM" could make the data easier to understand and process.
+
+Here's how the data could look with these changes:
+
+  ```json
+  "monday": [
+    {
+      "open": "10:00",
+      "close": "18:00"
+    },
+    {
+      "open": "20:00",
+      "close": "02:00"
+    }
+  ]
+  ```
+
+In this structure, it's clear that the restaurant opens at 10:00 AM, closes at 6:00 PM, reopens at 8:00 PM, and closes at 2:00 AM on the next day. This format is more intuitive and easier to understand at a glance.

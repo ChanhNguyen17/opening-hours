@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from src.app.routers import add_routers
-from src.app.exception_handlers import add_exception_handlers
+from src.app import add_routers
+from src.app import add_exception_handlers
 
 app = FastAPI()
 
