@@ -89,7 +89,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
 "friday" : [ { "type" : "open", "value" : 36000 } ],
 "saturday" : [ { "type" : "close", "value" : 3600 }, { "type" : "open", "value" : 36000 } ],
 "sunday" : [ { "type" : "close", "value" : 3605 }, {"type" : "open", "value" : 43200 }, { "type" : "close", "value" : 75600 }, {"type" : "open", "value" : 86399 } ]
-}' http://0.0.0.0:8000/restaurant-opening-hours
+}' http://0.0.0.0:8000/restaurant-opening-hours/
 ```
 
 The expected response should be:
@@ -115,7 +115,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
     "friday": [],
     "saturday": [],
     "sunday": []
-}' http://0.0.0.0:8000/restaurant-opening-hours
+}' http://0.0.0.0:8000/restaurant-opening-hours/
 ```
 The response to a bad request will return a 400 status code with details about the invalid request format.
 
